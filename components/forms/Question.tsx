@@ -1,10 +1,9 @@
 'use client'
 import React, { useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { QuestionsSchema } from '@/lib/validations'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+import { useForm } from 'react-hook-form'
 import {
   Form,
   FormControl,
@@ -15,16 +14,26 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import Image from 'next/image'
 import { Button } from '../ui/button'
+import { QuestionsSchema } from '@/lib/validations'
 import { Badge } from '../ui/badge'
+import Image from 'next/image'
+import { useRouter, usePathname } from 'next/navigation'
+import { createQuestion } from '@/lib/actions/question.actions'
 
-const Question = () => {
-  const type:any = 'create'
+const type:any = 'create'
 
+interface Props {
+  mongoUserId: string;
+}
+
+const Question = ({ mongoUserId }: Props) => {
   const editorRef = useRef(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
 
+  // 1. Define your form.
   const form = useForm<z.infer<typeof QuestionsSchema>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
@@ -34,12 +43,26 @@ const Question = () => {
     }
   })
 
+  // 2. Define a submit handler.
   async function onSubmit (values: z.infer<typeof QuestionsSchema>) {
     setIsSubmitting(true)
 
     try {
-      console.log(values)
+      // make an async call to your API -> create a question
+      // contain all form data
+
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: pathname
+      })
+
+      // navigate to home page
+      router.push('/')
     } catch (error) {
+
     } finally {
       setIsSubmitting(false)
     }
