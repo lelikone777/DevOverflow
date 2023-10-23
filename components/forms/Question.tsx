@@ -27,7 +27,10 @@ interface Props {
   mongoUserId: string;
 }
 
-const Question = ({ mongoUserId }: Props) => {
+const Question = (
+  { mongoUserId }
+    : Props
+) => {
   const editorRef = useRef(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
