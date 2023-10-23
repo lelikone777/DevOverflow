@@ -1,6 +1,5 @@
-import { Schema } from "mongoose";
-
-import { IUser } from "@/mongodb";
+import { Schema } from 'mongoose'
+import { IUser } from '@/mongodb'
 
 export interface CreateAnswerParams {
   content: string;
