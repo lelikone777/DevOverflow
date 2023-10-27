@@ -13,7 +13,6 @@ const SheetTrigger = SheetPrimitive.Trigger
 
 const SheetClose = SheetPrimitive.Close
 
-// @ts-ignore
 const SheetPortal = ({
   className,
   ...props
