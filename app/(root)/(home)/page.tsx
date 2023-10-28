@@ -8,7 +8,7 @@ import { HomePageFilters } from '@/constants/filters'
 import { getQuestions } from '@/lib/actions/question.actions'
 import Link from 'next/link'
 
-export default async function Home () {
+export default async function Home() {
   const result = await getQuestions({})
 
   return (
@@ -42,8 +42,8 @@ export default async function Home () {
       <HomeFilters />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.questions.length > 0
-          ? result.questions.map((question) => (
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
@@ -56,12 +56,14 @@ export default async function Home () {
               createdAt={question.createdAt}
             />
           ))
-          : <NoResult
+        ) : (
+          <NoResult
             title="There’s no question to show"
             description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
             link="/ask-question"
             linkTitle="Ask a Question"
-          />}
+          />
+        )}
       </div>
     </>
   )
