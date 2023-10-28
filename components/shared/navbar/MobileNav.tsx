@@ -4,7 +4,7 @@ import {
   Sheet,
   SheetContent,
   SheetClose,
-  SheetTrigger
+  SheetTrigger,
 } from '@/components/ui/sheet'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,7 +19,9 @@ const NavContent = () => {
   return (
     <section className="flex h-full flex-col gap-6 pt-16">
       {sidebarLinks.map((item) => {
-        const isActive = (pathname.includes(item.route) && item.route.length > 1) || pathname === item.route
+        const isActive =
+          (pathname.includes(item.route) && item.route.length > 1) ||
+          pathname === item.route
 
         // TODO
 
@@ -27,9 +29,10 @@ const NavContent = () => {
           <SheetClose asChild key={item.route}>
             <Link
               href={item.route}
-              className={`${isActive
-                ? 'primary-gradient rounded-lg text-light-900'
-                : 'text-dark300_light900'
+              className={`${
+                isActive
+                  ? 'primary-gradient rounded-lg text-light-900'
+                  : 'text-dark300_light900'
               } flex items-center justify-start gap-4 bg-transparent p-4`}
             >
               <Image
@@ -39,7 +42,9 @@ const NavContent = () => {
                 height={20}
                 className={`${isActive ? '' : 'invert-colors'}`}
               />
-              <p className={`${isActive ? 'base-bold' : 'base-medium'}`}>{item.label}</p>
+              <p className={`${isActive ? 'base-bold' : 'base-medium'}`}>
+                {item.label}
+              </p>
             </Link>
           </SheetClose>
         )
@@ -60,7 +65,10 @@ const MobileNav = () => {
           className="invert-colors sm:hidden"
         />
       </SheetTrigger>
-      <SheetContent side="left" className="background-light900_dark200 border-none">
+      <SheetContent
+        side="left"
+        className="background-light900_dark200 border-none"
+      >
         <Link href="/" className="flex items-center gap-1">
           <Image
             src="/assets/images/site-logo.svg"
@@ -69,7 +77,9 @@ const MobileNav = () => {
             alt="DevFlow"
           />
 
-          <p className="h2-bold text-dark100_light900 font-spaceGrotesk">Dev <span className="text-primary-500">Overflow</span></p>
+          <p className="h2-bold text-dark100_light900 font-spaceGrotesk">
+            Dev <span className="text-primary-500">Overflow</span>
+          </p>
         </Link>
         <div>
           <SheetClose asChild>
@@ -88,7 +98,7 @@ const MobileNav = () => {
 
               <SheetClose asChild>
                 <Link href="/sign-up">
-                  <Button className='small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none'>
+                  <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none">
                     Sign Up
                   </Button>
                 </Link>

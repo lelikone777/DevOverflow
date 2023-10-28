@@ -2,11 +2,16 @@
 
 import { connectToDatabase } from '../mongoose'
 import User from '@/database/user.model'
-import { CreateUserParams, DeleteUserParams, GetAllUsersParams, UpdateUserParams } from './shared.types'
+import {
+  CreateUserParams,
+  DeleteUserParams,
+  GetAllUsersParams,
+  UpdateUserParams,
+} from './shared.types'
 import { revalidatePath } from 'next/cache'
 import Question from '@/database/question.model'
 
-export async function getUserById (params: any) {
+export async function getUserById(params: any) {
   try {
     await connectToDatabase()
 
@@ -21,7 +26,7 @@ export async function getUserById (params: any) {
   }
 }
 
-export async function createUser (userData: CreateUserParams) {
+export async function createUser(userData: CreateUserParams) {
   try {
     await connectToDatabase()
 
@@ -34,14 +39,14 @@ export async function createUser (userData: CreateUserParams) {
   }
 }
 
-export async function updateUser (params: UpdateUserParams) {
+export async function updateUser(params: UpdateUserParams) {
   try {
     await connectToDatabase()
 
     const { clerkId, updateData, path } = params
 
     await User.findOneAndUpdate({ clerkId }, updateData, {
-      new: true
+      new: true,
     })
 
     revalidatePath(path)
@@ -51,7 +56,7 @@ export async function updateUser (params: UpdateUserParams) {
   }
 }
 
-export async function deleteUser (params: DeleteUserParams) {
+export async function deleteUser(params: DeleteUserParams) {
   try {
     await connectToDatabase()
 
@@ -83,7 +88,7 @@ export async function deleteUser (params: DeleteUserParams) {
   }
 }
 
-export async function getAllUsers (params: GetAllUsersParams) {
+export async function getAllUsers(params: GetAllUsersParams) {
   try {
     await connectToDatabase()
     // const { page = 1, pageSize = 20, filter, searchQuery } = params

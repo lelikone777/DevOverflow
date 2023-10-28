@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.24.2",
@@ -23,11 +23,13 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
+    "html-react-parser": "^4.2.9",
     "lucide-react": "^0.284.0",
     "mongodb": "^6.2.0",
     "mongoose": "^7.6.3",
     "next": "latest",
     "prettier": "^3.0.3",
+    "prismjs": "^1.29.0",
     "react": "latest",
     "react-dom": "latest",
     "react-hook-form": "^7.47.0",
@@ -44,6 +46,7 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
+    "prettier-plugin-pkg": "^0.18.0",
     "tailwindcss": "latest",
     "typescript": "latest"
   }
