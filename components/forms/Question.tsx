@@ -1,4 +1,5 @@
 'use client'
+import { useTheme } from '@/context/ThemeProvider'
 import React, { useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,6 +29,7 @@ interface Props {
 }
 
 const Question = ({ mongoUserId }: Props) => {
+  const { mode } = useTheme()
   const editorRef = useRef(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
@@ -173,6 +175,8 @@ const Question = ({ mongoUserId }: Props) => {
                       'undo redo | ' +
                       'codesample | bold italic forecolor | alignleft aligncenter |' +
                       'alignright alignjustify | bullist numlist',
+                    skin: mode === 'dark' ? 'oxide-dark' : 'oxide',
+                    content_css: mode === 'dark' ? 'dark' : 'light',
                     content_style: 'body { font-family:Inter; font-size:16px }',
                   }}
                 />
