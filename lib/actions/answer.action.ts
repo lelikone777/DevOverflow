@@ -12,7 +12,7 @@ import { revalidatePath } from 'next/cache'
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
-    connectToDatabase()
+    await connectToDatabase()
 
     const { content, author, question, path } = params
 
