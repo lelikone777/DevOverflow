@@ -1,3 +1,5 @@
+import EditDeleteAction from '@/components/shared/EditDeleteAction'
+import { SignedIn } from '@clerk/nextjs'
 import Link from 'next/link'
 import React from 'react'
 import RenderTag from '../shared/RenderTag'
@@ -12,17 +14,20 @@ interface QuestionProps {
     name: string
   }[]
   author: {
+    clerkId: string
     _id: string
     name: string
     picture: string
   }
-  upvotes: number
+  upvotes: string[]
   views: number
   answers: Array<object>
   createdAt: Date
+  clerkId?: string
 }
 
 const QuestionCard = ({
+  clerkId,
   _id,
   title,
   tags,
@@ -32,6 +37,8 @@ const QuestionCard = ({
   answers,
   createdAt,
 }: QuestionProps) => {
+  const showActionButtons = clerkId && clerkId === author.clerkId
+
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -46,7 +53,11 @@ const QuestionCard = ({
           </Link>
         </div>
 
-        {/* If signed in add edit delete actions */}
+        <SignedIn>
+          {showActionButtons && (
+            <EditDeleteAction type="Question" itemId={JSON.stringify(_id)} />
+          )}
+        </SignedIn>
       </div>
 
       <div className="mt-3.5 flex flex-wrap gap-2">
@@ -69,7 +80,7 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
-          value={formatAndDivideNumber(upvotes)}
+          value={formatAndDivideNumber(upvotes.length)}
           title=" Votes"
           textStyles="small-medium text-dark400_light800"
         />

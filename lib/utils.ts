@@ -49,6 +49,17 @@ export const formatAndDivideNumber = (num: number): string => {
     const formattedNum = (num / 1000).toFixed(1)
     return `${formattedNum}K`
   } else {
+    // return num
     return num.toString()
   }
+}
+
+export const getJoinedDate = (date: Date): string => {
+  // Extract the month and year from the Date object
+  const month = date.toLocaleString('en-US', { month: 'long' })
+  const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1)
+  const year = date.getFullYear()
+  const joinedDate = `${capitalizedMonth} ${year}`
+
+  return joinedDate
 }
