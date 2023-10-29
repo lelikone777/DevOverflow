@@ -3,12 +3,14 @@ import AllAnswers from '@/components/shared/AllAnswers'
 import Metric from '@/components/shared/Metric'
 import ParseHTML from '@/components/shared/ParseHTML'
 import RenderTag from '@/components/shared/RenderTag'
+import Votes from '@/components/shared/Votes'
 import { getQuestionById } from '@/lib/actions/question.actions'
 import { getUserById } from '@/lib/actions/user.action'
 import { formatAndDivideNumber, getTimestamp } from '@/lib/utils'
 import { auth } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
+import React from 'react'
 
 const Page = async ({ params, searchParams }) => {
   const { userId: clerkId } = auth()
@@ -24,7 +26,7 @@ const Page = async ({ params, searchParams }) => {
   return (
     <>
       <div className="flex-start w-full flex-col">
-        <div className="sm: flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
+        <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
           <Link
             href={`/profile/${result.author.clerkId}`}
             className="flex items-center justify-start gap-1"
@@ -40,7 +42,18 @@ const Page = async ({ params, searchParams }) => {
               {result.author.name}
             </p>
           </Link>
-          <div className="flex justify-end">{/* Voting */}</div>
+          <div className="flex justify-end">
+            <Votes
+              type="Question"
+              itemId={JSON.stringify(result._id)}
+              userId={JSON.stringify(mongoUser._id)}
+              upvotes={result.upvotes.length}
+              hasupVoted={result.upvotes.includes(mongoUser._id)}
+              downvotes={result.downvotes.length}
+              hasdownVoted={result.downvotes.includes(mongoUser._id)}
+              hasSaved={mongoUser?.saved.includes(result._id)}
+            />
+          </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
           {result.title}
@@ -51,15 +64,15 @@ const Page = async ({ params, searchParams }) => {
         <Metric
           imgUrl="/assets/icons/clock.svg"
           alt="clock icon"
-          value={`asked ${getTimestamp(result.createdAt)}`}
-          title="Asked"
+          value={` asked ${getTimestamp(result.createdAt)}`}
+          title=" Asked"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="message"
           value={formatAndDivideNumber(result.answers.length)}
-          title="Answers"
+          title=" Answers"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
@@ -86,7 +99,7 @@ const Page = async ({ params, searchParams }) => {
 
       <AllAnswers
         questionId={result._id}
-        userId={JSON.stringify(mongoUser._id)}
+        userId={mongoUser._id}
         totalAnswers={result.answers.length}
       />
 
