@@ -6,6 +6,7 @@ import {
   CreateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  QuestionVoteParams,
   UpdateUserParams,
 } from './shared.types'
 import { revalidatePath } from 'next/cache'
@@ -95,6 +96,78 @@ export async function getAllUsers(params: GetAllUsersParams) {
 
     const users = await User.find({}).sort({ createdAt: -1 })
     return { users }
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export async function upvoteQuestion(params: QuestionVoteParams) {
+  try {
+    connectToDatabase()
+
+    const { questionId, userId, hasupVoted, hasdownVoted, path } = params
+
+    let updateQuery = {}
+
+    if (hasupVoted) {
+      updateQuery = { $pull: { upvotes: userId } }
+    } else if (hasdownVoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+        $push: { upvotes: userId },
+      }
+    } else {
+      updateQuery = { $addToSet: { upvotes: userId } }
+    }
+
+    const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
+      new: true,
+    })
+
+    if (!question) {
+      throw new Error('Question not found')
+    }
+
+    // Increment author's reputation
+
+    revalidatePath(path)
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export async function downvoteQuestion(params: QuestionVoteParams) {
+  try {
+    connectToDatabase()
+
+    const { questionId, userId, hasupVoted, hasdownVoted, path } = params
+
+    let updateQuery = {}
+
+    if (hasdownVoted) {
+      updateQuery = { $pull: { downvote: userId } }
+    } else if (hasupVoted) {
+      updateQuery = {
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId },
+      }
+    } else {
+      updateQuery = { $addToSet: { downvotes: userId } }
+    }
+
+    const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
+      new: true,
+    })
+
+    if (!question) {
+      throw new Error('Question not found')
+    }
+
+    // Increment author's reputation
+
+    revalidatePath(path)
   } catch (error) {
     console.log(error)
     throw error
