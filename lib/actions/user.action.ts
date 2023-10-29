@@ -178,12 +178,3 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     throw error
   }
 }
-
-// export async function getAllUsers(params: GetAllUsersParams) {
-//   try {
-//     connectToDatabase();
-//   } catch (error) {
-//     console.log(error);
-//     throw error;
-//   }
-// }
