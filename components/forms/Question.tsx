@@ -1,5 +1,4 @@
 'use client'
-import { createQuestion, editQuestion } from '@/lib/actions/question.actions'
 import React, { useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -21,6 +20,7 @@ import { Badge } from '../ui/badge'
 import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import { useTheme } from '@/context/ThemeProvider'
+import { createQuestion, editQuestion } from '@/lib/actions/question.actions'
 
 interface Props {
   type?: string
@@ -35,9 +35,17 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const parsedQuestionDetails = JSON.parse(questionDetails || '')
+  // const parsedQuestionDetails = JSON.parse(questionDetails || '')
+  //
+  // const groupedTags = parsedQuestionDetails.tags.map((tag) => tag.name)
 
-  const groupedTags = parsedQuestionDetails.tags.map((tag: any) => tag.name)
+  const parsedQuestionDetails = questionDetails
+    ? JSON.parse(questionDetails)
+    : ''
+
+  const groupedTags = parsedQuestionDetails
+    ? parsedQuestionDetails.tags.map((tag) => tag.name)
+    : []
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof QuestionsSchema>>({
